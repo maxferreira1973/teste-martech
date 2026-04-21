@@ -1,19 +1,19 @@
 // 1. INICIALIZAÇÃO DO GOOGLE ANALYTICS (Gtag.js)
-window.dataLayer = window.dataLayer || [];
-function gtag() { dataLayer.push(arguments); }
-gtag('js', new Date());
+// window.dataLayer = window.dataLayer || [];
+// function gtag() { dataLayer.push(arguments); }
+// gtag('js', new Date());
 
-const GA_ID = 'G-096NHNN8Q2';
+// const GA_ID = 'G-096NHNN8Q2';
 
 // Carregamento dinâmico do script do GA4
-(() => {
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(s);
-})();
+// (() => {
+//     const s = document.createElement('script');
+//    s.async = true;
+//    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+//    document.head.appendChild(s);
+// })();
 
-gtag('config', GA_ID, { 'send_page_view': true });
+// gtag('config', GA_ID, { 'send_page_view': true });
 
 // 2. MONITORAMENTO DE EVENTOS (DOM Ready)
 document.addEventListener('DOMContentLoaded', () => {
