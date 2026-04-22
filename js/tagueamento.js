@@ -1,25 +1,7 @@
-// 1. INICIALIZAÇÃO DO GOOGLE ANALYTICS (Gtag.js)
-// window.dataLayer = window.dataLayer || [];
-// function gtag() { dataLayer.push(arguments); }
-// gtag('js', new Date());
-
-// const GA_ID = 'G-096NHNN8Q2';
-
-// Carregamento dinâmico do script do GA4
-// (() => {
-//     const s = document.createElement('script');
-//    s.async = true;
-//    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-//    document.head.appendChild(s);
-// })();
-
-// gtag('config', GA_ID, { 'send_page_view': true });
-
-// 2. MONITORAMENTO DE EVENTOS (DOM Ready)
 document.addEventListener('DOMContentLoaded', () => {
     const pageLoc = window.location.href;
 
-    // --- EVENTOS DE MENU ---
+    // --- EVENTS MENU ---
     const menuContato = document.querySelector('.menu-lista-contato');
     if (menuContato) {
         menuContato.addEventListener('click', () => {
@@ -42,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- PÁGINA ANÁLISE (Cards de Montadoras) ---
+    // --- ANALISE PAGE (Montadoras Cards) ---
     document.querySelectorAll('.card-montadoras').forEach(card => {
         card.addEventListener('click', function() {
             const nome = this.getAttribute('data-name') ? this.getAttribute('data-name').toLowerCase() : 'desconhecido';
@@ -54,13 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- FORMULÁRIO DE CONTATO (Lógica Avançada) ---
+    // --- CONTACT FORM ---
     const form = document.querySelector('form.contato');
     
     if (form) {
         let formStarted = false;
 
-        // Evento: form_start (dispara no primeiro caractere digitado)
+        // Event: form_start 
         form.querySelectorAll('input, textarea').forEach(input => {
             input.addEventListener('input', () => {
                 if (!formStarted) {
@@ -74,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Evento: form_submit (com trava de segurança para o Payload)
+        // Event: form_submit 
         form.addEventListener('submit', (event) => {
-            // Impedimos o envio imediato para dar tempo ao Google Analytics
+            
             event.preventDefault(); 
 
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -84,24 +66,24 @@ document.addEventListener('DOMContentLoaded', () => {
             gtag('event', 'form_submit', {
                 'page_location': pageLoc,
                 'form_id': form.id || 'contato',
-                'form_name': form.getAttribute('name') || 'contato',
+                'form_name': form.getAttribute('name'),
                 'form_destination': form.getAttribute('action') || pageLoc,
                 'form_submit_text': submitBtn ? submitBtn.innerText.trim() : 'enviar'
             });
 
             console.log("Evento form_submit disparado. Enviando dados...");
 
-            // Aguarda 500ms para garantir que o 'collect' do GA4 saia antes da página mudar
+            // Waiting 500ms to garantee that 'collect' from GA4 'get out' before the page changes
             setTimeout(() => {
                 form.submit(); 
             }, 500);
         });
 
-        // Evento: view_form_success (Observador de mudanças no DOM)
+        // Event: view_form_success 
         const successObserver = new MutationObserver(() => {
             const lightbox = document.querySelector('.lightbox');
             
-            // Verifica se o elemento existe e se está visível (via texto ou classe)
+            // Check if the element exists and visible
             if (lightbox && lightbox.innerText.toLowerCase().includes('obrigado')) {
                 gtag('event', 'view_form_success', {
                     'page_location': pageLoc,
@@ -110,11 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 console.log("Sucesso detectado: Evento view_form_success enviado.");
-                successObserver.disconnect(); // Para de observar para evitar disparos duplos
+                successObserver.disconnect(); // Stop the observation to avaid double triggers
             }
         });
 
-        // Inicia a observação no body para capturar o aparecimento do lightbox
+        // Beginning the observation on body to pick the lightbox
         successObserver.observe(document.body, { 
             childList: true, 
             subtree: true,
